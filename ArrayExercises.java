@@ -7,18 +7,14 @@ import java.util.Scanner;
 
 public class ArrayExercises {
     public static void main(String[] args) {
-        String[] menu = {"1.\tArray Exercise 1", "2.\tArray Exercise 2", "3.\tArray Exercise 3", "4.\tArray Exercise 4",
-                "5.\tArray Exercise 5", "6.\tArray Exercise 6", "7.\tArray Exercise 7", "9.\tArray Exercise 9",
-                "10.\tArray Exercise 10", "12.\tArray Exercise 12", "13.\tArray Exercise 13", "0.\tQuit"};
-        Scanner inp = new Scanner(System.in);
+        String[] menu = {"\nExercise Menu","1.\tArray Exercise 1", "2.\tArray Exercise 2", "3.\tArray Exercise 3", "4.\tArray Exercise 4",
+                "5.\tArray Exercise 5", "6.\tArray Exercise 6", "7.\tArray Exercise 7", "8.\tArray Exercise 8","9.\tArray Exercise 9",
+                "10.\tArray Exercise 10","11.\tArray Exercise 11", "12.\tArray Exercise 12", "13.\tArray Exercise 13", "0.\tQuit"};
         int menuInput;
+        printMenu(menu);
         do {
-            System.out.println("\nExercise Menu");
-            for (String menuIndex : menu) {
-                System.out.println(menuIndex);
-            }
-            System.out.print("What Exercise do you want to run?:");
-            menuInput = inp.nextInt();
+            System.out.print("\nWhat Exercise do you want to run?:");
+            menuInput = getValidInt();//Reused from Exercise 9
             switch (menuInput) {
                 case 0: {
                     System.out.println("Thx for this time. Catch you later");
@@ -58,12 +54,20 @@ public class ArrayExercises {
                     exercise7(intArray);
                     break;
                 }
+                case 8: {//Exercise 8
+                    exercise8();
+                    break;
+                }
                 case 9: {
                     exercise9();
                     break;
                 }
                 case 10: { //Exercise 10
                     exercise10();
+                    break;
+                }
+                case 11: { //Exercise 11
+                    exercise11();
                     break;
                 }
                 case 12: {
@@ -75,14 +79,21 @@ public class ArrayExercises {
                     break;
                 }
                 default: {
+                    printMenu(menu);
                     break;
                 }
             }
+
         }
         while (menuInput != 0);
     }
 
+    public static void printMenu(String[] menu){
+        for (String menuIndex : menu) {
+            System.out.println(menuIndex);
+        }
 
+    }
     /**
      * Write a program which will store elements in an array of type ‘int’ and print it out.
      * Expected output: 11 23 39 etc.
@@ -243,6 +254,32 @@ public class ArrayExercises {
             }
         }
     }
+    /*8. Write a program which will remove the duplicate elements of a given
+    array [20, 20, 40, 20, 30, 40, 50, 60, 50]. Expected output: Array: 20 20 40 20 30 40 50 60 50
+    Array without duplicate values: 20 40 30 50 60*/
+    public static void exercise8(){
+        int[] startArray={20,20,40,20,30,40,50,60,50};
+        int[] resultArray=new int[0];
+        for(int index:startArray) {
+            if (!doesExist(resultArray, index)){
+                resultArray=addElement(resultArray,index);//Reused from exercise 9
+            }
+        }
+        System.out.print("Array: ");
+        printIntegers(startArray);//reused from exercise 7
+        System.out.print("\nArray without duplicate values: ");
+        printIntegers(resultArray);//reused from exercise 7
+    }
+
+    public static boolean doesExist(int[] valueList, int seekValue) {
+        Arrays.sort(valueList);
+        if(Arrays.binarySearch(valueList, seekValue)<0) {
+            return false;
+        }
+         else {
+            return true;
+        }
+    }
 
     /*9. Write a method which will add elements in an array.
     Remember that arrays are fixed in size so you need to come up with a
@@ -253,7 +290,7 @@ public class ArrayExercises {
         int[] elementArray = new int[0];
         int newElement;
         do {
-            System.out.print("Elements in this Excercise are supposesed to be an integer. Please input element: ");
+            System.out.print("Elements in this Excercise are supposesed to be an integer.\nPlease input element: ");
             newElement = getValidInt();//input a valid integer
             elementArray = addElement(elementArray, newElement);//Add the new element
             printElementArray(elementArray); //Show us what we got
@@ -347,13 +384,48 @@ public class ArrayExercises {
             System.out.println();
         }
     }
+    /*11. Write a program that ask the user for an integer and repeat that
+     question until user give you a specific value that user already has been
+     told about as a message in your program. Store these values in an array
+     and print that array. After that reverse the array elements so that the
+     first element becomes the last element, the second element becomes the second to last
+     element, etc. Do not just reverse the order in which
+     hey are printed. You need to change the way they are stored in the
+      array.
+     */
+    public static void exercise11()
+    {
+        Random rnd = new Random();
+        int secretNumber=rnd.nextInt(10);//Random number between 0-9
+        int[] guesses=new int[0];
+        int currentGuess;
+        System.out.println("The secret number is "+secretNumber);
+        do {
+            System.out.print("Please enter an Integer: ");
+            currentGuess=getValidInt(); //Reused from Exercise 9
+            guesses = addElement(guesses, currentGuess);//reused from Exercise 9
+        }
+        while (currentGuess!=secretNumber);
+        System.out.println("\nguesslist");
+        printIntegers(guesses); //reused from Exercise 7
+        guesses=reverseArray(guesses);
+        System.out.println("\ninverted guesslist");
+        printIntegers(guesses); //reused from Exercise 7
+        }
 
+    public static int[] reverseArray(int[] orgArray){
+        int[] revArray=new int[orgArray.length];
+        for(int i=0;i<orgArray.length;i++){
+            revArray[revArray.length-i-1]=orgArray[i];
+            }
+        return revArray;
+
+    }
     /*12. Write a program which will print the diagonal elements of
     two-dimensional array.
     Expected output: 1 4 9
      */
     public static void exercise12() {
-
         int[][] sumMatris = assignProductMatris(3);//Reuse from exersize 10
         printArrayDiagonal(sumMatris); //print it.
 
